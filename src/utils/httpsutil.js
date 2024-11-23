@@ -6,7 +6,7 @@ export async function fetchUsers() {
             throw new Error('Authorization token is missing');
         }
 
-        const response = await fetch('http://localhost:8080/users', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/detail`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export async function fetchDomain() {
             throw new Error('Authorization token is missing');
         }
 
-        const response = await fetch('http://localhost:8080/domain', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/domain`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export async function fetchPlacement() {
             throw new Error('Authorization token is missing');
         }
 
-        const response = await fetch('http://localhost:8080/placement', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/placement`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export async function fetchSpecialization() {
             throw new Error('Authorization token is missing');
         }
 
-        const response = await fetch('http://localhost:8080/specialization', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/specialization`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export async function fetchSpecialization() {
 }
 
 export const login = async (username, password) => {
-    const response = await fetch('http://localhost:8080/login', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export const login = async (username, password) => {
 };
 
 export const signup = async (username, password) => {
-    const response = await fetch('http://localhost:8080/signup', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export const signup = async (username, password) => {
 };
 
 export const changePassword = async (oldPassword, newPassword, token) => {
-    const response = await fetch('http://localhost:8080/password', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/password`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ export const changePassword = async (oldPassword, newPassword, token) => {
 };
 
 export const modifyStudentDetails = async (studentData, token) => {
-    const response = await fetch('http://localhost:8080/detail', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/detail`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
