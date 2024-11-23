@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react'
+import Students from '../model/Students';
 
 export default function useStudentsDetails() {
     const [users, setUsers] = useState([]);
@@ -9,12 +10,12 @@ export default function useStudentsDetails() {
         (async () => {
             setIsLoading(true);
             try {
-                const fetchedUsers = await fetchUsers();
+                const fetchedUser = await fetchUsers();
                 
-                const persons = fetchedUsers.map((item) => new Users(item));
-                setUsers(persons);
+                fetchedUser = new Students(fetchedUser);
+                setUsers(fetchedUser);
                 
-                console.log("Mapped Data:", persons); 
+                console.log("Mapped Data:", fetchedUser); 
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -24,6 +25,5 @@ export default function useStudentsDetails() {
     }, []);
     
 
-    // Return all necessary states from the hook
     return { users, isLoading, error };
 }
