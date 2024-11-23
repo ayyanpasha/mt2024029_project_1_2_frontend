@@ -25,6 +25,87 @@ export async function fetchUsers() {
     }
 }
 
+export async function fetchDomain() {
+    try {
+        const token = localStorage.getItem('Authorization');
+        
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+
+        const response = await fetch('http://localhost:8080/domain', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data, status: ' + response.status);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error('Error fetching data: ' + error.message);
+    }
+}
+
+export async function fetchPlacement() {
+    try {
+        const token = localStorage.getItem('Authorization');
+        
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+
+        const response = await fetch('http://localhost:8080/placement', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data, status: ' + response.status);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error('Error fetching data: ' + error.message);
+    }
+}
+
+export async function fetchSpecialization() {
+    try {
+        const token = localStorage.getItem('Authorization');
+        
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+
+        const response = await fetch('http://localhost:8080/specialization', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data, status: ' + response.status);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error('Error fetching data: ' + error.message);
+    }
+}
+
 export const login = async (username, password) => {
     const response = await fetch('http://localhost:8080/login', {
         method: 'POST',
