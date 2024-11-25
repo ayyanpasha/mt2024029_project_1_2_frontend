@@ -1,8 +1,25 @@
-import React, {useState,useEffect} from 'react'
+import {useState,useEffect} from 'react'
+import { fetchUsers } from '../utils/httpsutil';
 import Students from '../model/Students';
 
 export default function useStudentsDetails() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(new Students(
+        {
+            studentId: '',
+            rollNumber: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            photographPath: '',
+            cgpa: '',
+            totalCredits: '',
+            graduationYear: '',
+            domain: '',
+            specialization: '',
+            placement: ''
+        }
+    ));
+    
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null)
 
@@ -12,10 +29,8 @@ export default function useStudentsDetails() {
             try {
                 const fetchedUser = await fetchUsers();
                 
-                fetchedUser = new Students(fetchedUser);
-                setUsers(fetchedUser);
-                
-                console.log("Mapped Data:", fetchedUser); 
+                const student = new Students(fetchedUser);
+                setUsers(student);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -25,5 +40,5 @@ export default function useStudentsDetails() {
     }, []);
     
 
-    return { users, isLoading, error };
+    return { users,setUsers, isLoading, error };
 }

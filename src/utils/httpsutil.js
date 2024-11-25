@@ -1,34 +1,35 @@
+import axios from 'axios';
+
 export async function fetchUsers() {
     try {
         const token = localStorage.getItem('Authorization');
-        
+
         if (!token) {
             throw new Error('Authorization token is missing');
         }
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/detail`, {
-            method: 'GET',
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/detail`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
+            withCredentials: true,
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch data, status: ' + response.status);
-        }
+        console.log(response.data);
+        return response.data;
 
-        const data = await response.json();
-        return data;
     } catch (error) {
-        throw new Error('Error fetching data: ' + error.message);
+        // Handle errors appropriately
+        throw new Error('Error fetching data: ' + (error.response ? error.response.status : error.message));
     }
 }
+
 
 export async function fetchDomain() {
     try {
         const token = localStorage.getItem('Authorization');
-        
+
         if (!token) {
             throw new Error('Authorization token is missing');
         }
@@ -46,6 +47,7 @@ export async function fetchDomain() {
         }
 
         const data = await response.json();
+        console.log(data);
         return data;
     } catch (error) {
         throw new Error('Error fetching data: ' + error.message);
@@ -55,7 +57,7 @@ export async function fetchDomain() {
 export async function fetchPlacement() {
     try {
         const token = localStorage.getItem('Authorization');
-        
+
         if (!token) {
             throw new Error('Authorization token is missing');
         }
@@ -82,7 +84,7 @@ export async function fetchPlacement() {
 export async function fetchSpecialization() {
     try {
         const token = localStorage.getItem('Authorization');
-        
+
         if (!token) {
             throw new Error('Authorization token is missing');
         }
@@ -122,14 +124,15 @@ export const login = async (username, password) => {
         throw new Error('Login failed: ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
 
     localStorage.setItem('Authorization', data);
+    console.log(data);
 
-    return data.token;
+    return data;
 };
 
-export const signup = async (username, password) => {
+export const signup = async (username, password, email) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/signup`, {
         method: 'POST',
         headers: {
@@ -138,6 +141,7 @@ export const signup = async (username, password) => {
         body: JSON.stringify({
             username,
             password,
+            email
         }),
     });
 
@@ -145,14 +149,20 @@ export const signup = async (username, password) => {
         throw new Error('Signup failed: ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
 
     localStorage.setItem('Authorization', data);
 
     return data.token;
 };
 
-export const changePassword = async (oldPassword, newPassword, token) => {
+export const changePassword = async (oldPassword, newPassword) => {
+    const token = localStorage.getItem('Authorization');
+
+    if (!token) {
+        throw new Error('Authorization token is missing');
+    }
+
     const response = await fetch(`${process.env.REACT_APP_API_URL}/password`, {
         method: 'POST',
         headers: {
@@ -173,7 +183,14 @@ export const changePassword = async (oldPassword, newPassword, token) => {
     return data;
 };
 
-export const modifyStudentDetails = async (studentData, token) => {
+export const modifyStudentDetails = async (studentData) => {
+    const token = localStorage.getItem('Authorization');
+
+    if (!token) {
+        throw new Error('Authorization token is missing');
+    }
+
+    console.log(studentData);
     const response = await fetch(`${process.env.REACT_APP_API_URL}/detail`, {
         method: 'POST',
         headers: {
@@ -187,6 +204,6 @@ export const modifyStudentDetails = async (studentData, token) => {
         throw new Error('Failed to modify student details: ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
     return data;
 };

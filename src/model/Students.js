@@ -9,11 +9,12 @@ export default class Students {
         this.cgpa = data.cgpa;
         this.totalCredits = data.totalCredits;
         this.graduationYear = data.graduationYear;
-        this.domainId = data.domainId;
-        this.specializationId = data.specializationId;
-        this.placementId = data.placementId;
+        this.domain = data.domain;
+        this.specialization = data.specialization;
+        this.placement = data.placement;
     }
 
+    // Getter methods
     getStudentId() {
         return this.studentId;
     }
@@ -51,14 +52,63 @@ export default class Students {
     }
 
     getDomainId() {
-        return this.domainId;
+        return this.domain;
     }
 
     getSpecializationId() {
-        return this.specializationId;
+        return this.specialization;
     }
 
     getPlacementId() {
-        return this.placementId;
+        return this.placement;
+    }
+
+    // Setter methods
+    setStudentId(studentId) {
+        this.studentId = studentId;
+    }
+
+    setRollNumber(rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    setFirstName(firstName) {
+        this.firstName = firstName;
+    }
+
+    setLastName(lastName) {
+        this.lastName = lastName;
+    }
+
+    setEmail(email) {
+        this.email = email;
+    }
+
+    setPhotographPath(photographPath) {
+        this.photographPath = photographPath;
+    }
+
+    setCgpa(cgpa) {
+        this.cgpa = cgpa;
+    }
+
+    setTotalCredits(totalCredits) {
+        this.totalCredits = totalCredits;
+    }
+
+    setGraduationYear(graduationYear) {
+        this.graduationYear = graduationYear;
+    }
+
+    setDomainId(domain) {
+        this.domain = domain;
+    }
+
+    setSpecializationId(specialization) {
+        this.specialization = specialization;
+    }
+
+    setPlacementId(placement) {
+        this.placement = placement;
     }
 }
