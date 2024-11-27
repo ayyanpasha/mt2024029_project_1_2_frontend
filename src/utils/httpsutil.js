@@ -179,7 +179,7 @@ export const changePassword = async (oldPassword, newPassword) => {
         throw new Error('Failed to change password: ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
     return data;
 };
 

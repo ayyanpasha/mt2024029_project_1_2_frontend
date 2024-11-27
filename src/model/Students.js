@@ -51,15 +51,15 @@ export default class Students {
         return this.graduationYear;
     }
 
-    getDomainId() {
+    getDomain() {
         return this.domain;
     }
 
-    getSpecializationId() {
+    getSpecialization() {
         return this.specialization;
     }
 
-    getPlacementId() {
+    getPlacement() {
         return this.placement;
     }
 
@@ -100,15 +100,15 @@ export default class Students {
         this.graduationYear = graduationYear;
     }
 
-    setDomainId(domain) {
+    setDomain(domain) {
         this.domain = domain;
     }
 
-    setSpecializationId(specialization) {
+    setSpecialization(specialization) {
         this.specialization = specialization;
     }
 
-    setPlacementId(placement) {
+    setPlacement(placement) {
         this.placement = placement;
     }
 }
