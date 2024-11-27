@@ -16,7 +16,79 @@ export async function fetchUsers() {
             withCredentials: true,
         });
 
+        return response.data;
+
+    } catch (error) {
+        // Handle errors appropriately
+        throw new Error('Error fetching data: ' + (error.response ? error.response.status : error.message));
+    }
+}
+
+export async function fetchEducation() {
+    try {
+        const token = localStorage.getItem('Authorization');
+
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/education`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            withCredentials: true,
+        });
+
         console.log(response.data);
+
+        return response.data;
+
+    } catch (error) {
+        // Handle errors appropriately
+        throw new Error('Error fetching data: ' + (error.response ? error.response.status : error.message));
+    }
+}
+
+export async function deleteEducationWithId(educationId) {
+    try {
+        const token = localStorage.getItem('Authorization');
+
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/education`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            data: { educationId }
+        });
+
+        return response.data;
+
+    } catch (error) {
+        // Handle errors appropriately
+        throw new Error('Error fetching data: ' + (error.response ? error.response.status : error.message));
+    }
+}
+
+
+export async function postEducation(education) {
+    try {
+        const token = localStorage.getItem('Authorization');
+
+        if (!token) {
+            throw new Error('Authorization token is missing');
+        }
+
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/education`, education, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
         return response.data;
 
     } catch (error) {
@@ -47,7 +119,6 @@ export async function fetchDomain() {
         }
 
         const data = await response.json();
-        console.log(data);
         return data;
     } catch (error) {
         throw new Error('Error fetching data: ' + error.message);
@@ -127,7 +198,6 @@ export const login = async (username, password) => {
     const data = await response.text();
 
     localStorage.setItem('Authorization', data);
-    console.log(data);
 
     return data;
 };
@@ -190,7 +260,6 @@ export const modifyStudentDetails = async (studentData) => {
         throw new Error('Authorization token is missing');
     }
 
-    console.log(studentData);
     const response = await fetch(`${process.env.REACT_APP_API_URL}/detail`, {
         method: 'POST',
         headers: {

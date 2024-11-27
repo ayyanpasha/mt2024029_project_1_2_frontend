@@ -160,6 +160,14 @@ export default function StudentDetail() {
                                         {isLoading ? 'Saving...' : 'Save Changes'}
                                     </button>
                                 </form>
+                                <Link
+                                to="/education"
+                                        type="submit"
+                                        className="btn btn-primary btn-block"
+                                    >
+                                        Education Details
+                                    </Link>
+                                    <br/>
                                 <Link to="/changePassword">Change Password</Link>
                             </div>
                         </div>

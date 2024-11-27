@@ -4,6 +4,7 @@ import Signup from './layout/Signup';
 import Login from './layout/Login';
 import ChangePassword from './layout/ChangePassword';
 import StudentDetail from './layout/StudentDetail';
+import Education from './layout/Education';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/changePassword" element={<ChangePassword />} />
+          <Route exact path="/education" element={<Education />} />
           <Route exact path="/" element={<StudentDetail />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
