@@ -1,26 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { modifyStudentDetails } from '../utils/httpsutil';
+import { useNavigate, useParams } from 'react-router-dom';
 import Students from '../model/Students';
-import useStudentsDetails from '../hooks/useStudentsDetails';
-// import useDomain from '../hooks/useDomain';
-// import useSpecialization from '../hooks/useSpecialization';
+import useDomain from '../hooks/useDomain';
+import useSpecialization from '../hooks/useSpecialization';
 import StudentDetailInput from '../components/Presentation/StudentDetailInput';
-// import StudentDetailFile from '../components/Presentation/StudentDetailFile';
 import './StudentDetail.css';
 import axios from 'axios';
+import usePlacement from '../hooks/usePlacement';
 
-export default function StudentDetail() {
+export default function ModifyStudentDetails() {
     const history = useNavigate();
-    const { users, setUsers, isLoading, error } = useStudentsDetails();
-    // const { domain } = useDomain();
-    // const { specialization } = useSpecialization();
+    const [users, setUsers] = useState(new Students(
+        {
+            studentId: '',
+            rollNumber: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            photographPath: '',
+            cgpa: '',
+            totalCredits: '',
+            graduationYear: '',
+            domain: '',
+            specialization: '',
+            placement: ''
+        }
+    ));
+    const {studentId} = useParams();
+    const { domain } = useDomain();
+    const { specialization } = useSpecialization();
+    const {placement} = usePlacement();
     const [imageUrl, setImageUrl] = useState('');
 
-    // const [selectedValue, setSelectedValue] = useState('');
-    // const [selectedValueS, setSelectedValueS] = useState('');
-    // const [fileName, setFileName] = useState('');
+    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedValueS, setSelectedValueS] = useState('');
+    const [selectedValueP, setSelectedValueP] = useState('');
+    
 
+    useEffect(() => {
+        (async() => {
+            try {
+                const response = await axios.get(`http://localhost:8080/admin/student/${studentId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const student = new Students(response.data);
+                setUsers(student);
+            } catch (error) {
+                console.error('Error fetching the image:', error);
+                // Handle error (e.g., fallback to default image)
+                setImageUrl('/path/to/default-image.jpg');
+            }
+        })();
+    },[studentId])
     useEffect(() => {
         // Function to fetch the image
         const fetchImage = async () => {
@@ -63,14 +98,20 @@ export default function StudentDetail() {
             cgpa: users.getCgpa(),
             totalCredits: users.getTotalCredits(),
             graduationYear: users.getGraduationYear(),
-            domainId: users.getDomain(),
-            specializationId: users.getSpecialization(),
-            placementId: users.getPlacement(),
+            domainId: selectedValue === '0' ? '' : selectedValue,
+            specializationId: selectedValueS === '0' ? '' : selectedValueS,
+            placementId: selectedValueP === '0'? '': selectedValueP,
         };
 
         try {
-            await modifyStudentDetails(updatedStudent);
-            history('/login');
+            await axios.post(`http://localhost:8080/admin/student/${studentId}`, updatedStudent, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('Authorization')}`,
+                    'Content-Type': 'application/json',
+                },
+                
+            });
+            history('/admin');
         } catch (err) {
             console.error('Error updating student details:', err);
         }
@@ -84,66 +125,65 @@ export default function StudentDetail() {
         }));
     };
 
-    // const handleChangeSelect = (event) => {
-    //     setSelectedValue(event.target.value);
-    // };
+    const handleChangeSelect = (event) => {
+        setSelectedValue(event.target.value);
+    };
 
-    // const handleChangeSelectS = (event) => {
-    //     setSelectedValueS(event.target.value);
-    // };
-
-    const logout = () => {
-        localStorage.removeItem('Authorization');
-        history('/login');
+    const handleChangeSelectS = (event) => {
+        setSelectedValueS(event.target.value);
+    };
+    const handleChangeSelectP = (event) => {
+        setSelectedValueP(event.target.value);
     };
 
     const userFields = [
-        { id: 'rollNumber', name: 'rollNumber', label: 'Roll Number', type: 'text', getter: users.getRollNumber(), required: true , readOnly: true},
-        { id: 'firstName', name: 'firstName', label: 'First Name', type: 'text', getter: users.getFirstName(), required: true , readOnly: true},
-        { id: 'lastName', name: 'lastName', label: 'Last Name', type: 'text', getter: users.getLastName(), required: true , readOnly: true},
-        { id: 'email', name: 'email', label: 'Email', type: 'email', getter: users.getEmail(), required: true },
-        { id: 'photographPath', name: 'photographPath', label: 'Photograph Path', type: 'text', getter: users.getPhotographPath(), required: false, readOnly: true },
-        { id: 'cgpa', name: 'cgpa', label: 'CGPA', type: 'number', getter: users.getCgpa(), required: true , readOnly: true},
-        { id: 'totalCredits', name: 'totalCredits', label: 'Total Credits', type: 'number', getter: users.getTotalCredits(), required: true , readOnly: true},
-        { id: 'graduationYear', name: 'graduationYear', label: 'Graduation Year', type: 'number', getter: users.getGraduationYear(), required: true , readOnly: true},
+        { id: 'rollNumber', name: 'rollNumber', label: 'Roll Number', type: 'text', getter: users.getRollNumber(), required: true },
+        { id: 'firstName', name: 'firstName', label: 'First Name', type: 'text', getter: users.getFirstName(), required: true },
+        { id: 'lastName', name: 'lastName', label: 'Last Name', type: 'text', getter: users.getLastName(), required: true },
+        { id: 'email', name: 'email', label: 'Email', type: 'email', getter: users.getEmail(), required: true , readOnly: true},
+        { id: 'cgpa', name: 'cgpa', label: 'CGPA', type: 'number', getter: users.getCgpa(), required: true},
+        { id: 'totalCredits', name: 'totalCredits', label: 'Total Credits', type: 'number', getter: users.getTotalCredits(), required: true},
+        { id: 'graduationYear', name: 'graduationYear', label: 'Graduation Year', type: 'number', getter: users.getGraduationYear(), required: true},
         { id: 'domainId', name: 'domainId', label: 'Domain', type: 'text', getter: users.getDomain().program, required: true , readOnly: true},
         { id: 'specializationId', name: 'specializationId', label: 'Specialization', type: 'text', getter: users.getSpecialization().name, required: true , readOnly:true},
         { id: 'placementId', name: 'placementId', label: 'Placement ID', type: 'text', getter: users.getPlacement().organization, required: false, readOnly: true }
     ];
 
-    // const selectFields = [
-    //     {
-    //         id: 'domainIdSelect',
-    //         name: 'domainIdSelect',
-    //         label: 'Change Domain(Drop Down)',
-    //         value: selectedValue,
-    //         onChange: handleChangeSelect,
-    //         options: domain.map(item => ({
-    //             value: item.getDomainId(),
-    //             label: item.getProgram(),
-    //         })),
-    //     },
-    //     {
-    //         id: 'specializationIdSelect',
-    //         name: 'specializationIdSelect',
-    //         label: 'Change Specialization(Drop Down)',
-    //         value: selectedValueS,
-    //         onChange: handleChangeSelectS,
-    //         options: specialization.map(item => ({
-    //             value: item.getSpecializationId(),
-    //             label: item.getName(),
-    //         })),
-    //     },
-    // ];
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        history('/login');
-        return <div className="alert alert-danger">{error}</div>;
-    }
+    const selectFields = [
+        {
+            id: 'domainIdSelect',
+            name: 'domainIdSelect',
+            label: 'Change Domain(Drop Down)',
+            value: selectedValue,
+            onChange: handleChangeSelect,
+            options: domain.map(item => ({
+                value: item.getDomainId(),
+                label: item.getProgram(),
+            })),
+        },
+        {
+            id: 'specializationIdSelect',
+            name: 'specializationIdSelect',
+            label: 'Change Specialization(Drop Down)',
+            value: selectedValueS,
+            onChange: handleChangeSelectS,
+            options: specialization.map(item => ({
+                value: item.getSpecializationId(),
+                label: item.getName(),
+            })),
+        },
+        {
+            id: 'placementIdSelect',
+            name: 'placementIdSelect',
+            label: 'Change Placement(Drop Down)',
+            value: selectedValueP,
+            onChange: handleChangeSelectP,
+            options: placement.map(item => ({
+                value: item.getId(),
+                label: item.getOrganization(),
+            })),
+        },
+    ];
 
     return (
         <>
@@ -154,7 +194,6 @@ export default function StudentDetail() {
                             <div className="card-body">
                                 <div className="heading">
                                     <h3 className="card-title">Modify Student Details</h3>
-                                    <button className="btn btn-danger" onClick={logout}>Logout</button>
                                 </div>
 
                                 {/* Display Profile Image */}
@@ -183,7 +222,7 @@ export default function StudentDetail() {
                                                     readOnly={readOnly}
                                                 />
                                             ))}
-                                            {/* {selectFields.map(({ id, name, label, value, onChange, options }) => (
+                                            {selectFields.map(({ id, name, label, value, onChange, options }) => (
                                                 <StudentDetailInput
                                                     key={id}
                                                     type="select"
@@ -194,7 +233,7 @@ export default function StudentDetail() {
                                                     label={label}
                                                     options={options}
                                                 />
-                                            ))} */}
+                                            ))}
                                             {/* <StudentDetailFile
                                                 label="Select Photo"
                                                 setFileName={setFileName}
@@ -205,17 +244,9 @@ export default function StudentDetail() {
                                     <button
                                         type="submit"
                                         className="btn btn-success btn-block"
-                                        disabled={isLoading}
-                                    >
-                                        {isLoading ? 'Saving...' : 'Save Changes'}
+                                    >Modify Details
                                     </button>
                                 </form>
-                                <Link to="/education" className="btn btn-primary btn-block mt-1 mb-1">
-                                    Education Details
-                                </Link>
-                                <br />
-                                <Link to="/changeImage">Change Image</Link><br/>
-                                <Link to="/changePassword">Change Password</Link>
                             </div>
                         </div>
                     </div>

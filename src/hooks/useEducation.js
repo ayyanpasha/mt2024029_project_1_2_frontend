@@ -8,21 +8,22 @@ export default function useEducation() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        (async () => {
-            setIsLoading(true);
-            try {
-                const fetchedEducation = await fetchEducation();
+    const load = async () => {
+        setIsLoading(true);
+        try {
+            const fetchedEducation = await fetchEducation();
+            setEducation(fetchedEducation);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
-                setEducation(fetchedEducation);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setIsLoading(false);
-            }
-        })();
+    useEffect(() => {
+        load();
     }, []);
 
 
-    return { education, setEducation, isLoading, error };
+    return { education, setEducation, isLoading, error, load };
 }

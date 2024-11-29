@@ -52,19 +52,23 @@ export default function ChangePassword() {
             <div className="card-body">
               <h5 className="card-title text-center">Change Password</h5>
               <form onSubmit={handleSubmit}>
-                {passwordFields.map(({ id, name, label }) => (
-                  <StudentDetailInput
-                    key={id}
-                    type="password"
-                    id={id}
-                    name={name}
-                    value={password[name]}
-                    onChange={handleChange}
-                    label={label}
-                    required
-                  />
-                ))}
+                <table class="table table-striped" border={3}>
+                  <tbody>
+                    {passwordFields.map(({ id, name, label }) => (
+                      <StudentDetailInput
+                        key={id}
+                        type="password"
+                        id={id}
+                        name={name}
+                        value={password[name]}
+                        onChange={handleChange}
+                        label={label}
+                        required
+                      />
+                    ))}
 
+                  </tbody>
+                </table>
                 <button
                   type="submit"
                   className="btn btn-primary btn-block"
@@ -72,7 +76,7 @@ export default function ChangePassword() {
                   Change Password
                 </button>
               </form>
-              <Link to="/">Details</Link>
+              <Link className='btn btn-danger' style={{margin: '10px'}} to="/">Back</Link>
             </div>
           </div>
         </div>

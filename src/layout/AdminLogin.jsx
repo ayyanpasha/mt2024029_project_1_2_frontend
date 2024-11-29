@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 
-const Login = () => {
+const AdminLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const {error, isLoading, loginUser} = useLogin();
@@ -11,7 +11,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await loginUser(username,password);
-        history("/");
+        history("/admin");
     };
 
     return (
@@ -20,7 +20,7 @@ const Login = () => {
                 <div className="col-md-6">
                     <div className="card mt-5">
                         <div className="card-body">
-                            <h5 className="card-title text-center">Login</h5>
+                            <h5 className="card-title text-center">ADMIN Login</h5>
                             
                             {error && <div className="alert alert-danger">{error}</div>}
                             
@@ -67,4 +67,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default AdminLogin;

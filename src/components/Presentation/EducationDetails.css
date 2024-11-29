@@ -1,0 +1,109 @@
+/* Base Colors */
+:root {
+    --primary-color: #00796b; /* Teal - Fresh, professional accent */
+    --secondary-color: #004d40; /* Dark teal - For stronger elements */
+    --bg-light: #f9fafb; /* Very light gray background */
+    --bg-card: #ffffff; /* Card background (white) */
+    --text-dark: #212121; /* Almost black text for readability */
+    --text-muted: #757575; /* Muted text color */
+    --delete-color: #e57373; /* Soft red for delete button */
+    --hover-color: #c62828; /* Darker red for button hover */
+}
+
+/* Card Container */
+.education-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Light gray border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.education-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Header */
+.education-card-header {
+    background: linear-gradient(135deg, #00796b, #004d40); /* Gradient teal */
+    padding: 16px;
+    text-align: center;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.education-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    color: #ffffff;
+}
+
+/* Body */
+.education-card-body {
+    padding: 20px;
+    color: var(--text-dark);
+    font-family: 'Roboto', sans-serif;
+}
+
+.education-institute,
+.education-percentage {
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+.education-institute strong,
+.education-percentage strong {
+    color: var(--secondary-color); /* Darker teal for strong labels */
+}
+
+.education-percentage {
+    font-weight: 500;
+}
+
+/* Footer */
+.education-card-footer {
+    padding: 14px;
+    background: var(--bg-light);
+    border-top: 1px solid #e0e0e0;
+    text-align: right;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Delete Button */
+.btn-delete {
+    background-color: var(--delete-color); /* Soft red for delete button */
+    color: white;
+    font-size: 0.875rem;
+    padding: 8px 18px;
+    border-radius: 25px;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-delete:hover {
+    background-color: var(--hover-color); /* Darker red on hover */
+    transform: scale(1.05); /* Zoom effect on hover */
+}
+
+/* Icon Styling */
+.btn-delete i {
+    margin-right: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .education-card {
+        margin-bottom: 1rem;
+    }
+    .education-card-body {
+        padding: 15px;
+    }
+    .education-title {
+        font-size: 1.2rem;
+    }
+}

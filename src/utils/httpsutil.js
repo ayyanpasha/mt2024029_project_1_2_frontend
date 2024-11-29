@@ -40,7 +40,6 @@ export async function fetchEducation() {
             withCredentials: true,
         });
 
-        console.log(response.data);
 
         return response.data;
 
